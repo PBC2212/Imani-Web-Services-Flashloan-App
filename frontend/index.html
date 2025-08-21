@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imani Flash Loans - DeFi Platform</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.7.1/dist/ethers.umd.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        .card {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .grid {
+            display: grid;
+            gap: 24px;
+        }
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        @media (max-width: 768px) {
+            .grid-2, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 16px;
+        }
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .stat-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 4px;
+        }
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .profit-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .status-card {
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .status-success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .status-error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .status-warning {
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        .text-green { color: #22c55e; }
+        .text-red { color: #ef4444; }
+        .text-yellow { color: #f59e0b; }
+        .text-blue { color: #3b82f6; }
+        .text-gray { color: rgba(255, 255, 255, 0.6); }
+        .loading {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .hidden { display: none; }
+        .wallet-info {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .connect-section {
+            text-align: center;
+            padding: 80px 20px;
+        }
+        .icon {
+            width: 20px;
+            height: 20px;
+        }
+        .icon-lg {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { Wallet, Zap, RefreshCw, CheckCircle, AlertTriangle, ExternalLink, Calculator } = lucide;
+
+        // Contract configuration
+        const CONTRACT_ADDRESS = "0xf2D6c635AFc942780Fa0Afb55aFE2Fa6d8d23d35";
+        const SEPOLIA_CHAIN_ID = 11155111;
+
+        const CONTRACT_ABI = [
+            "function executeFlashLoan(address asset, uint256 amount, uint8 strategy, bytes calldata strategyData, uint256 expectedProfit, uint256 deadline, uint256 nonce) external",
+            "function getFlashLoanFee(address asset, uint256 amount) external view returns (uint256)",
+            "function checkProfitability(address asset, uint256 amount, uint256 estimatedProfit) external view returns (bool, uint256)",
+            "function getUserNonce(address user) external view returns (uint256)",
+            "function estimateRefinanceProfit(address asset, uint256 amount, uint256 currentRate, uint256 newRate) external view returns (uint256)",
+            "function serviceFee() external view returns (uint256)"
+        ];
+
+        const ASSETS = {
+            USDC: { address: "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8", decimals: 6, symbol: "USDC" },
+            WETH: { address: "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14", decimals: 18, symbol: "WETH" },
+            DAI: { address: "0xFF34B3d4Aee8ddCd6F9AFFFB6Fe49bD371b8a357", decimals: 18, symbol: "DAI" }
+        };
+
+        function FlashLoanApp() {
+            const [connected, setConnected] = useState(false);
+            const [account, setAccount] = useState('');
+            const [contract, setContract] = useState(null);
+            const [loading, setLoading] = useState(false);
+            
+            // Form states
+            const [amount, setAmount] = useState('1000');
+            const [selectedAsset, setSelectedAsset] = useState('USDC');
+            const [currentRate, setCurrentRate] = useState('5.0');
+            const [newRate, setNewRate] = useState('4.5');
+            
+            // Results states
+            const [flashLoanFee, setFlashLoanFee] = useState(null);
+            const [estimatedProfit, setEstimatedProfit] = useState(null);
+            const [isProfitable, setIsProfitable] = useState(false);
+            const [serviceFee, setServiceFee] = useState(null);
+            const [userNonce, setUserNonce] = useState(null);
+
+            const connectWallet = async () => {
+                if (typeof window.ethereum !== 'undefined') {
+                    try {
+                        setLoading(true);
+                        await window.ethereum.request({ method: 'eth_requestAccounts' });
+                        
+                        const provider = new ethers.BrowserProvider(window.ethereum);
+                        const network = await provider.getNetwork();
+                        
+                        if (Number(network.chainId) !== SEPOLIA_CHAIN_ID) {
+                            await window.ethereum.request({
+                                method: 'wallet_switchEthereumChain',
+                                params: [{ chainId: '0xaa36a7' }],
+                            });
+                        }
+                        
+                        const signer = await provider.getSigner();
+                        const address = await signer.getAddress();
+                        const contractInstance = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+                        
+                        setAccount(address);
+                        setContract(contractInstance);
+                        setConnected(true);
+                        
+                        await loadContractData(contractInstance, address);
+                        
+                    } catch (error) {
+                        console.error('Failed to connect:', error);
+                        alert('Failed to connect wallet. Please try again.');
+                    } finally {
+                        setLoading(false);
+                    }
+                } else {
+                    alert('Please install MetaMask to use this app');
+                }
+            };
+
+            const loadContractData = async (contractInstance, userAddress) => {
+                try {
+                    const [fee, nonce] = await Promise.all([
+                        contractInstance.serviceFee(),
+                        contractInstance.getUserNonce(userAddress)
+                    ]);
+                    
+                    setServiceFee(Number(fee));
+                    setUserNonce(Number(nonce));
+                } catch (error) {
+                    console.error('Failed to load contract data:', error);
+                }
+            };
+
+            const calculateEstimates = async () => {
+                if (!contract || !amount) return;
+                
+                try {
+                    setLoading(true);
+                    const asset = ASSETS[selectedAsset];
+                    const amountWei = ethers.parseUnits(amount, asset.decimals);
+                    
+                    const fee = await contract.getFlashLoanFee(asset.address, amountWei);
+                    setFlashLoanFee(ethers.formatUnits(fee, asset.decimals));
+                    
+                    if (currentRate && newRate && parseFloat(currentRate) > parseFloat(newRate)) {
+                        const currentRateBps = Math.floor(parseFloat(currentRate) * 100);
+                        const newRateBps = Math.floor(parseFloat(newRate) * 100);
+                        
+                        const annualSavings = await contract.estimateRefinanceProfit(
+                            asset.address,
+                            amountWei,
+                            currentRateBps,
+                            newRateBps
+                        );
+                        
+                        const savingsFormatted = ethers.formatUnits(annualSavings, asset.decimals);
+                        setEstimatedProfit(savingsFormatted);
+                        
+                        const [profitable] = await contract.checkProfitability(
+                            asset.address,
+                            amountWei,
+                            annualSavings
+                        );
+                        
+                        setIsProfitable(profitable);
+                    }
+                    
+                } catch (error) {
+                    console.error('Failed to calculate estimates:', error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const executeRefinance = async () => {
+                if (!contract || !amount) return;
+                
+                try {
+                    setLoading(true);
+                    alert('This is a demo transaction. In production, this would execute a real flash loan refinance.');
+                    
+                } catch (error) {
+                    console.error('Failed to execute refinance:', error);
+                    alert(`Transaction failed: ${error.message}`);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            useEffect(() => {
+                if (connected && contract) {
+                    const timer = setTimeout(calculateEstimates, 500);
+                    return () => clearTimeout(timer);
+                }
+            }, [amount, selectedAsset, currentRate, newRate, connected, contract]);
+
+            if (!connected) {
+                return (
+                    <div>
+                        <div className="header">
+                            <div className="header-content">
+                                <div className="logo">
+                                    <div className="logo-icon">
+                                        <Zap className="icon" />
+                                    </div>
+                                    <div>
+                                        <h1 style={{margin: 0, fontSize: '24px'}}>Imani Flash Loans</h1>
+                                        <p style={{margin: 0, fontSize: '14px', opacity: 0.7}}>Production DeFi Platform</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="container">
+                            <div className="connect-section">
+                                <Wallet className="icon-lg" />
+                                <h2>Connect Your Wallet</h2>
+                                <p className="text-gray">Connect to Sepolia testnet to start using flash loans</p>
+                                <button onClick={connectWallet} className="btn btn-primary" disabled={loading}>
+                                    <Wallet className="icon" />
+                                    {loading ? 'Connecting...' : 'Connect Wallet'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div>
+                    <div className="header">
+                        <div className="header-content">
+                            <div className="logo">
+                                <div className="logo-icon">
+                                    <Zap className="icon" />
+                                </div>
+                                <div>
+                                    <h1 style={{margin: 0, fontSize: '24px'}}>Imani Flash Loans</h1>
+                                    <p style={{margin: 0, fontSize: '14px', opacity: 0.7}}>Production DeFi Platform</p>
+                                </div>
+                            </div>
+                            
+                            <div className="wallet-info">
+                                <div className="stat-label">Connected</div>
+                                <div className="text-green">{account.slice(0, 6)}...{account.slice(-4)}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="container">
+                        {/* Contract Status */}
+                        <div className="card">
+                            <h2 style={{marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                                <CheckCircle className="icon text-green" />
+                                Contract Status
+                            </h2>
+                            <div className="grid grid-4">
+                                <div className="stat-card">
+                                    <div className="stat-label">Service Fee</div>
+                                    <div className="stat-value text-green">
+                                        {serviceFee ? `${serviceFee/100}%` : 'Loading...'}
+                                    </div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-label">Your Nonce</div>
+                                    <div className="stat-value">{userNonce ?? 'Loading...'}</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-label">Network</div>
+                                    <div className="stat-value text-blue">Sepolia</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-label">Contract</div>
+                                    <div className="stat-value">
+                                        <a 
+                                            href={`https://sepolia.etherscan.io/address/${CONTRACT_ADDRESS}`}
+                                            target="_blank"
+                                            className="text-blue"
+                                            style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px'}}
+                                        >
+                                            Verified <ExternalLink style={{width: '16px', height: '16px'}} />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Main Interface */}
+                        <div className="grid grid-2">
+                            {/* Strategy Input */}
+                            <div className="card">
+                                <h2 style={{marginBottom: '24px'}}>Flash Loan Strategy</h2>
+                                
+                                <div className="form-group">
+                                    <label className="form-label">Asset</label>
+                                    <select
+                                        value={selectedAsset}
+                                        onChange={(e) => setSelectedAsset(e.target.value)}
+                                        className="form-select"
+                                    >
+                                        {Object.entries(ASSETS).map(([symbol]) => (
+                                            <option key={symbol} value={symbol}>{symbol}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="form-group">
+                                    <label className="form-label">Amount</label>
+                                    <input
+                                        type="number"
+                                        value={amount}
+                                        onChange={(e) => setAmount(e.target.value)}
+                                        className="form-input"
+                                        placeholder="1000"
+                                    />
+                                </div>
+
+                                <div className="grid grid-2">
+                                    <div className="form-group">
+                                        <label className="form-label">Current Rate (%)</label>
+                                        <input
+                                            type="number"
+                                            step="0.1"
+                                            value={currentRate}
+                                            onChange={(e) => setCurrentRate(e.target.value)}
+                                            className="form-input"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">New Rate (%)</label>
+                                        <input
+                                            type="number"
+                                            step="0.1"
+                                            value={newRate}
+                                            onChange={(e) => setNewRate(e.target.value)}
+                                            className="form-input"
+                                        />
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={executeRefinance}
+                                    disabled={loading || !isProfitable}
+                                    className="btn btn-primary"
+                                    style={{width: '100%', marginTop: '16px'}}
+                                >
+                                    <RefreshCw className={`icon ${loading ? 'loading' : ''}`} />
+                                    {loading ? 'Processing...' : 
+                                     !isProfitable ? 'Not Profitable' : 
+                                     'Execute Refinance'}
+                                </button>
+                            </div>
+
+                            {/* Profit Calculation */}
+                            <div className="card">
+                                <h2 style={{marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                                    <Calculator className="icon" />
+                                    Profit Calculation
+                                </h2>
+
+                                <div className="profit-card">
+                                    <span className="text-gray">Flash Loan Fee</span>
+                                    <span className="text-red">
+                                        {flashLoanFee ? `-$${parseFloat(flashLoanFee).toFixed(2)}` : 'Calculating...'}
+                                    </span>
+                                </div>
+
+                                <div className="profit-card">
+                                    <span className="text-gray">Annual Savings</span>
+                                    <span className="text-green">
+                                        {estimatedProfit ? `+$${parseFloat(estimatedProfit).toFixed(2)}` : 'Calculating...'}
+                                    </span>
+                                </div>
+
+                                <div className="profit-card">
+                                    <span className="text-gray">Platform Fee (0.25%)</span>
+                                    <span className="text-yellow">
+                                        {estimatedProfit ? `-$${(parseFloat(estimatedProfit) * 0.0025).toFixed(2)}` : 'Calculating...'}
+                                    </span>
+                                </div>
+
+                                <div className="profit-card" style={{background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2))', border: '1px solid rgba(59, 130, 246, 0.3)'}}>
+                                    <span style={{fontWeight: '600'}}>Net Annual Benefit</span>
+                                    <span className="text-green" style={{fontSize: '20px', fontWeight: 'bold'}}>
+                                        {estimatedProfit && flashLoanFee ? 
+                                            `+$${(parseFloat(estimatedProfit) - parseFloat(flashLoanFee) - (parseFloat(estimatedProfit) * 0.0025)).toFixed(2)}` : 
+                                            'Calculating...'
+                                        }
+                                    </span>
+                                </div>
+
+                                <div className={`status-card ${isProfitable ? 'status-success' : 'status-error'}`}>
+                                    {isProfitable ? (
+                                        <CheckCircle className="icon text-green" />
+                                    ) : (
+                                        <AlertTriangle className="icon text-red" />
+                                    )}
+                                    <span className={isProfitable ? 'text-green' : 'text-red'}>
+                                        {isProfitable ? 'Transaction is profitable' : 'Transaction not profitable'}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Instructions */}
+                        <div className="card status-warning">
+                            <h3 style={{margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                                <AlertTriangle className="icon text-yellow" />
+                                Getting Started
+                            </h3>
+                            <div style={{fontSize: '14px', lineHeight: '1.6'}}>
+                                <div>1. <strong>Get test tokens:</strong> Visit <a href="https://staging.aave.com/faucet/" target="_blank" style={{color: '#3b82f6'}}>Aave Sepolia Faucet</a></div>
+                                <div>2. <strong>Create positions:</strong> Deposit collateral and borrow on Aave V3 Sepolia</div>
+                                <div>3. <strong>Find opportunities:</strong> Look for rate differences between positions</div>
+                                <div>4. <strong>Execute refinance:</strong> Use this interface to save on borrowing costs</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<FlashLoanApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>
