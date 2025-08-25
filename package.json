@@ -1,0 +1,24 @@
+{
+  "name": "flashloan-cli",
+  "version": "1.0.0",
+  "description": "CLI for interacting with FlashLoanManager smart contract",
+  "type": "module",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "deploy:sepolia": "npx hardhat run scripts/deploy.js --network sepolia",
+    "deploy:mainnet": "npx hardhat run scripts/deploy.js --network mainnet",
+    "start": "node cli.js"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "@openzeppelin/contracts-upgradeable": "^5.4.0",
+    "commander": "^11.1.0",
+    "dotenv": "^16.6.1",
+    "ethers": "^6.15.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^4.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^3.0.1"
+  }
+}

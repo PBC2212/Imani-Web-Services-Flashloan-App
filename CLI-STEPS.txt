@@ -1,0 +1,46 @@
+How to use this from your CLI
+
+You can now call these simple wrappers from your Node CLI:
+
+Arbitrage
+
+node cli.js arbitrage \
+  --flashAsset 0xUSDC \
+  --flashAmount 1000 \
+  --tokenIn 0xUSDC \
+  --tokenOut 0xWETH \
+  --fee 3000 \
+  --minOut 0 \
+  --expectedProfit 10 \
+  --deadline $(($(date +%s)+600))
+
+
+Liquidation
+
+node cli.js liquidate \
+  --flashAsset 0xUSDC \
+  --flashAmount 1000 \
+  --borrower 0xUser \
+  --collateralAsset 0xWETH \
+  --debtAsset 0xUSDC \
+  --debtAmount 1000 \
+  --receiveAToken false \
+  --minProfitBps 50 \
+  --expectedProfit 10 \
+  --deadline $(($(date +%s)+600))
+
+
+Refinance (custom strategyData)
+
+node cli.js refinance \
+  --flashAsset 0xUSDC \
+  --flashAmount 10000 \
+  --expectedProfit 0 \
+  --deadline $(($(date +%s)+900)) \
+  --data 0x...   # ABI-encoded off-chain plan if needed
+______________________________________________________________
+
+node cli.js flashloan --asset 0xToken --amount 100
+node cli.js arbitrage --tokenIn 0xTokenA --tokenOut 0xTokenB --amount 10
+node cli.js liquidate --user 0xUser --debtAsset 0xDebt --collateralAsset 0xCollat --debtAmount 5
+node cli.js refinance --oldLender 0xOld --newLender 0xNew --amount 20

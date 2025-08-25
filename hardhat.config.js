@@ -1,10 +1,8 @@
 import "@nomicfoundation/hardhat-toolbox";
-import "@nomicfoundation/hardhat-ethers";
-import "@nomicfoundation/hardhat-verify";
 import "dotenv/config";
-import { HardhatUserConfig } from "hardhat/config";
 
-const config: HardhatUserConfig = {
+/** @type import('hardhat/config').HardhatUserConfig */
+const config = {
   solidity: {
     version: "0.8.24",
     settings: {
@@ -12,19 +10,13 @@ const config: HardhatUserConfig = {
         enabled: true,
         runs: 200,
       },
-      viaIR: true, // Enable intermediate representation for better optimization
-      evmVersion: "paris", // Use Paris EVM version for better compatibility
+      viaIR: true,
+      evmVersion: "paris",
     },
   },
   networks: {
     hardhat: {
-      // Local network for testing
       chainId: 31337,
-      forking: {
-        // Uncomment to fork mainnet for testing
-        // url: process.env.MAINNET_RPC_URL || "",
-        // blockNumber: 18500000, // Optional: pin to specific block
-      },
     },
     localhost: {
       url: "http://127.0.0.1:8545",
@@ -34,17 +26,11 @@ const config: HardhatUserConfig = {
       url: process.env.SEPOLIA_RPC_URL || "",
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       chainId: 11155111,
-      gasPrice: "auto",
-      gas: "auto",
-      gasMultiplier: 1.2, // Add 20% buffer for gas estimation
     },
     mainnet: {
       url: process.env.MAINNET_RPC_URL || "",
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       chainId: 1,
-      gasPrice: "auto",
-      gas: "auto",
-      gasMultiplier: 1.1, // Smaller buffer for mainnet
     },
   },
   etherscan: {
@@ -58,13 +44,10 @@ const config: HardhatUserConfig = {
         chainId: 11155111,
         urls: {
           apiURL: "https://api-sepolia.etherscan.io/api",
-          browserURL: "https://sepolia.etherscan.io"
-        }
-      }
-    ]
-  },
-  sourcify: {
-    enabled: true,
+          browserURL: "https://sepolia.etherscan.io",
+        },
+      },
+    ],
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS === "true",
@@ -75,8 +58,7 @@ const config: HardhatUserConfig = {
     noColors: true,
   },
   mocha: {
-    timeout: 120000, // 2 minutes timeout for tests (flash loan tests can be slow)
-    reporter: "spec",
+    timeout: 120000,
   },
   paths: {
     sources: "./contracts",
