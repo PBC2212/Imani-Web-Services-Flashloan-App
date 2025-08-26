@@ -3,22 +3,62 @@
   "version": "1.0.0",
   "description": "CLI for interacting with FlashLoanManager smart contract",
   "type": "module",
+  "bin": {
+    "flashloan": "./cli.js"
+  },
   "scripts": {
     "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "node": "npx hardhat node",
+    "deploy:local": "npx hardhat run scripts/deploy.js --network localhost",
     "deploy:sepolia": "npx hardhat run scripts/deploy.js --network sepolia",
     "deploy:mainnet": "npx hardhat run scripts/deploy.js --network mainnet",
+    "verify": "npx hardhat run scripts/verify.js",
+    "cli": "node cli.js",
+    "status": "node cli.js status",
     "start": "node cli.js"
   },
+  "keywords": [
+    "defi",
+    "flashloan",
+    "aave",
+    "arbitrage",
+    "liquidation",
+    "ethereum",
+    "hardhat",
+    "cli"
+  ],
   "dependencies": {
-    "@openzeppelin/contracts": "^5.4.0",
-    "@openzeppelin/contracts-upgradeable": "^5.4.0",
+    "@openzeppelin/contracts": "^5.0.1",
+    "@openzeppelin/contracts-upgradeable": "^5.0.1",
+    "@openzeppelin/hardhat-upgrades": "^3.0.5",
     "commander": "^11.1.0",
-    "dotenv": "^16.6.1",
-    "ethers": "^6.15.0"
+    "dotenv": "^16.3.1",
+    "ethers": "^6.9.2"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-ethers": "^4.0.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.5",
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
-    "hardhat": "^3.0.1"
-  }
+    "@nomicfoundation/hardhat-verify": "^2.0.3",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
+    "@typechain/ethers-v6": "^0.5.0",
+    "@typechain/hardhat": "^9.1.0",
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6",
+    "chai": "^4.3.10",
+    "hardhat": "^2.19.4",
+    "hardhat-gas-reporter": "^1.0.9",
+    "solidity-coverage": "^0.8.5",
+    "typechain": "^8.3.2",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/flashloan-cli.git"
+  },
+  "author": "Your Name",
+  "license": "MIT"
 }

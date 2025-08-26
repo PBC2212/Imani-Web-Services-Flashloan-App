@@ -1,0 +1,179 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "MockAavePool",
+  "sourceName": "contracts/MockAavePool.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "ADDRESSES_PROVIDER",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "receiverAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "asset",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "params",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint16",
+          "name": "",
+          "type": "uint16"
+        }
+      ],
+      "name": "flashLoanSimple",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getPool",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "getUserAccountData",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "name": "liquidationCall",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_healthFactor",
+          "type": "uint256"
+        }
+      ],
+      "name": "setHealthFactor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_result",
+          "type": "uint256"
+        }
+      ],
+      "name": "setLiquidationResult",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6080806040523461001f5760008055600060015561032790816100258239f35b600080fdfe608060408181526004918236101561001657600080fd5b600092833560e01c918262a718a91461027457508163026b1d5f146102595781630542975c1461023c57816331111708146102235783826342b0b77c146100d357508163be105521146100b9575063bf92857c1461007357600080fd5b346100b55760203660031901126100b55760c09161008f6102c0565b5080549080835193818552816020860152840152806060840152608083015260a0820152f35b5080fd5b8390346100b55760203660031901126100b5573560015580f35b915091346100b55760a03660031901126100b5576100ef6102c0565b906100f86102db565b9367ffffffffffffffff9260643584811161021f573660238201121561021f57808301359185831161021b57366024848401011161021b5760843561ffff81160361021b57602497601f9760209460c460018060a01b03938285938b519e8f998a988995631b11d0ff60e01b8752168d8601526044358286015287604486015230606486015260a060848601528260a48601520184840137848382840101528c199c8d9101168101030193165af18015610211576101b4578580f35b6020933d602011610209575b601f8501168501928311858410176101f65750526020908201829003126100b55751801515036101f35738808080808580f35b80fd5b634e487b7160e01b865260419052602485fd5b3d94506101c0565b82513d88823e3d90fd5b8680fd5b8580fd5b8390346100b55760203660031901126100b55735815580f35b5050346100b557816003193601126100b557602090516101238152f35b5050346100b557816003193601126100b55760209051308152f35b8490346100b55760a03660031901126100b55761028f6102c0565b506102986102db565b506044356001600160a01b038116036100b557608435801515036100b5576020906001548152f35b600435906001600160a01b03821682036102d657565b600080fd5b602435906001600160a01b03821682036102d65756fea26469706673582212205aa1baab40f8230511af0b1c8ff535413f638575a0f16d6554a074c6a56817a464736f6c63430008180033",
+  "deployedBytecode": "0x608060408181526004918236101561001657600080fd5b600092833560e01c918262a718a91461027457508163026b1d5f146102595781630542975c1461023c57816331111708146102235783826342b0b77c146100d357508163be105521146100b9575063bf92857c1461007357600080fd5b346100b55760203660031901126100b55760c09161008f6102c0565b5080549080835193818552816020860152840152806060840152608083015260a0820152f35b5080fd5b8390346100b55760203660031901126100b5573560015580f35b915091346100b55760a03660031901126100b5576100ef6102c0565b906100f86102db565b9367ffffffffffffffff9260643584811161021f573660238201121561021f57808301359185831161021b57366024848401011161021b5760843561ffff81160361021b57602497601f9760209460c460018060a01b03938285938b519e8f998a988995631b11d0ff60e01b8752168d8601526044358286015287604486015230606486015260a060848601528260a48601520184840137848382840101528c199c8d9101168101030193165af18015610211576101b4578580f35b6020933d602011610209575b601f8501168501928311858410176101f65750526020908201829003126100b55751801515036101f35738808080808580f35b80fd5b634e487b7160e01b865260419052602485fd5b3d94506101c0565b82513d88823e3d90fd5b8680fd5b8580fd5b8390346100b55760203660031901126100b55735815580f35b5050346100b557816003193601126100b557602090516101238152f35b5050346100b557816003193601126100b55760209051308152f35b8490346100b55760a03660031901126100b55761028f6102c0565b506102986102db565b506044356001600160a01b038116036100b557608435801515036100b5576020906001548152f35b600435906001600160a01b03821682036102d657565b600080fd5b602435906001600160a01b03821682036102d65756fea26469706673582212205aa1baab40f8230511af0b1c8ff535413f638575a0f16d6554a074c6a56817a464736f6c63430008180033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
